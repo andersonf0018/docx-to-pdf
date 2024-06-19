@@ -1,12 +1,16 @@
+const cors = require('cors');
 const express = require('express');
+const { configDotenv } = require('dotenv');
 const bodyParser = require('body-parser');
 const libre = require('libreoffice-convert');
 const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
+configDotenv();
+app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 
 app.post('/docx-to-pdf', async (req, res) => {
