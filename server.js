@@ -42,7 +42,7 @@ app.post('/docx-to-pdf', async (req, res) => {
     res.json({ base64Pdf });
   } catch (error) {
     console.error('Error converting document:', error);
-    res.status(500).send('Server error');
+    res.status(500).send(error.message);
   }
 });
 
