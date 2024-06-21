@@ -22,7 +22,6 @@ app.post('/docx-to-pdf', async (req, res) => {
     const docxPath = path.join(__dirname, 'temp.docx');
     fs.writeFileSync(docxPath, docxBuffer);
 
-    const pdfPath = path.join(__dirname, 'temp.pdf');
     const pdfBuffer = await new Promise((resolve, reject) => {
       libre.convert(docxBuffer, '.pdf', undefined, (err, result) => {
         if (err) {
@@ -32,12 +31,11 @@ app.post('/docx-to-pdf', async (req, res) => {
       });
     });
 
-    fs.writeFileSync(pdfPath, pdfBuffer);
-
     const base64Pdf = pdfBuffer.toString('base64');
 
-    fs.unlinkSync(docxPath);
-    fs.unlinkSync(pdfPath);
+    if (fs.existsSync(docxPath)) {
+      fs.unlinkSync(docxPath);
+    }
 
     res.json({ base64Pdf });
   } catch (error) {
